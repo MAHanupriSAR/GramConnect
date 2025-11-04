@@ -18,51 +18,39 @@
         </header>
 
         <main class="form-content">
-            <form action="villagerDashboard.html" id="request-form">
+            <form action="villagerDashboard.html">
                 <div class="form-group">
                     <label>Image</label>
                     <div class="image-options-container">
                         <!-- Option 1: Gallery -->
                         <label for="gallery-upload" class="image-option">
-                            <input type="file" id="gallery-upload" name="gallery_image" accept="image/*" hidden>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <input type="file" id="gallery-upload" accept="image/*" hidden>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                                 <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2zM11.5 5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zm-7 2h7a.5.5 0 0 0 0 1h-7a.5.5 0 0 0 0-1zm7 2.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
                             </svg>
                             <span>From Gallery</span>
                         </label>
                         <!-- Option 2: Camera -->
-                        <button type="button" id="take-photo-btn" class="image-option">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <label for="camera-upload" class="image-option">
+                            <input type="file" id="camera-upload" accept="image/*" capture="environment" hidden>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828-.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
                             </svg>
                             <span>Take Photo</span>
-                        </button>
+                        </label>
                     </div>
-                    <div id="photo-preview-container"></div>
-                    <input type="hidden" name="captured_image_data" id="captured-image-data">
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="6" placeholder="Describe the problem in detail..."></textarea>
+                    <textarea id="description" rows="6" placeholder="Describe the problem in detail..."></textarea>
                 </div>
 
                 <button type="submit" class="btn-submit">Submit Request</button>
             </form>
         </main>
     </div>
-
-    <!-- Camera Modal -->
-    <div id="camera-modal" class="modal-overlay">
-        <div class="modal-content">
-            <video id="camera-feed" autoplay playsinline></video>
-            <button type="button" id="capture-btn" class="capture-btn">Capture</button>
-            <button type="button" id="close-modal-btn" class="close-btn">&times;</button>
-        </div>
-    </div>
-
-    <script src="../JAVASCRIPT/createRequest.js"></script>
 </body>
 </html>
