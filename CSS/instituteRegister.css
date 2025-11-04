@@ -1,0 +1,179 @@
+:root {
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #8a8f9b;
+    --input-bg: #f5f7fa;
+    --border-color: #e9ecf1;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --accent-yellow: #ffd166;
+    --shadow: 0 8px 24px rgba(149, 157, 165, 0.1);
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+    border-radius: var(--radius-lg);
+    margin: 24px;
+}
+
+.form-header {
+    background: linear-gradient(135deg, #63e6be, #38d9a9); /* Keeping header green for consistency */
+    color: white;
+    padding: 32px 24px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.form-header h1 {
+    font-size: 26px;
+    margin: 0 0 8px;
+    font-weight: 700;
+}
+
+.form-header p {
+    font-size: 15px;
+    color: white;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.registration-form {
+    padding: 24px;
+}
+
+.registration-form h2 {
+    font-size: 16px;
+    color: var(--text-primary);
+    margin: 24px 0 16px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label, .form-group-checkbox label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #344054;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238A8F9B' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+input::placeholder {
+    color: #98a2b3;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #38d9a9;
+    box-shadow: 0 0 0 3px rgba(56, 217, 169, 0.2);
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0;
+}
+
+.form-group-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #38d9a9;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 999px;
+    color: #1a1a1a;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--accent-yellow);
+    box-shadow: 0 6px 18px rgba(255, 209, 102, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 209, 102, 0.5);
+}
+
+.form-footer {
+    text-align: center;
+    padding: 0 24px 24px;
+    font-size: 14px;
+}
+
+.form-footer a {
+    color: #38d9a9;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+    .form-header {
+        padding: 40px;
+    }
+    .registration-form {
+        padding: 32px 40px;
+    }
+    .form-row {
+        flex-direction: row;
+        gap: 24px;
+    }
+    .form-row .form-group {
+        flex: 1;
+        margin-bottom: 0;
+    }
+}

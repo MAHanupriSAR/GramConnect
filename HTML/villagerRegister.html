@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villager Registration</title>
+    <link rel="stylesheet" href="../CSS/villagerRegister.css">
+</head>
+<body>
+    <div class="form-container">
+        <header class="form-header">
+            <h1>Villager Registration</h1>
+            <p>Create your account to start posting problems and getting help.</p>
+        </header>
+
+        <form class="registration-form">
+            <div class="form-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="mobile-number">Mobile Number</label>
+                <input type="tel" id="mobile-number" placeholder="Enter your 10-digit mobile number">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="village">Village</label>
+                    <input type="text" id="village" placeholder="Village name">
+                </div>
+                <div class="form-group">
+                    <label for="district">District</label>
+                    <input type="text" id="district" placeholder="District name">
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" placeholder="State name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h2>Aadhaar Verification</h2>
+                <label for="aadhaar-number">Aadhaar Number</label>
+                <div class="input-with-button">
+                    <input type="text" id="aadhaar-number" placeholder="Enter 12-digit Aadhaar number">
+                    <button type="button" class="btn-otp">Send OTP</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Create Password</label>
+                <input type="password" id="password" placeholder="Enter a strong password">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Re-enter your password">
+            </div>
+
+            <div class="form-group-checkbox">
+                <input type="checkbox" id="terms">
+                <label for="terms">I agree to the Terms & Conditions</label>
+            </div>
+
+            <button type="submit" class="btn-submit">Register as Villager</button>
+        </form>
+
+        <footer class="form-footer">
+            <p>Already have an account? <a href="#">Login here</a></p>
+        </footer>
+    </div>
+</body>
+</html>

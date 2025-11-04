@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Choose Your Registration Type</title>
+    <link rel="stylesheet" href="../CSS/userType.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero" aria-labelledby="page-title">
+        <h1 id="page-title">Choose Your Registration Type</h1>
+        <p class="subtitle">Select how you'd like to join Village Connect</p>
+      </header>
+
+      <section class="cards" role="list">
+        <article class="card" role="listitem" aria-labelledby="villager-title">
+          <div class="card-head">
+            <div class="icon icon-green" aria-hidden="true">👥</div>
+            <div>
+              <h2 id="villager-title">I am a Villager</h2>
+              <p class="muted">Register to submit problems and get help from institutes in your area.</p>
+            </div>
+          </div>
+          <a class="btn btn-villager" href="villagerRegister.html">Continue as Villager</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="institute-title">
+          <div class="card-head">
+            <div class="icon icon-yellow" aria-hidden="true">🏢</div>
+            <div>
+              <h2 id="institute-title">I am an Institute</h2>
+              <p class="muted">Register to discover problems and offer solutions to village communities.</p>
+            </div>
+          </div>
+          <a class="btn btn-institute" href="instituteRegister.html">Continue as Institute</a>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <p class="muted small">Already have an account? <a href="/login">Login here</a></p>
+        <p class="muted small">← <a href="/">Back to Home</a></p>
+      </footer>
+    </main>
+  </body>
+</html>
