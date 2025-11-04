@@ -8,6 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const capturedImageDataInput = document.getElementById('captured-image-data');
     const galleryInput = document.getElementById('gallery-upload');
 
+    // --- Voice Recorder Elements ---
+    const startRecordBtn = document.getElementById('start-record-btn');
+    const recorderInitialState = document.getElementById('recorder-initial');
+    const recorderActiveState = document.getElementById('recorder-active');
+    const pauseRecordBtn = document.getElementById('pause-record-btn');
+    const resetRecordBtn = document.getElementById('reset-record-btn');
+    const doneRecordBtn = document.getElementById('done-record-btn');
+    const timerDisplay = document.getElementById('timer');
+    const audioPlaybackContainer = document.getElementById('audio-playback-container');
+
+    let mediaRecorder;
+    let audioChunks = [];
+    let timerInterval;
+    let seconds = 0;
+    let isResetting = false;
+
     let stream;
 
     // Open the camera modal and start the stream
@@ -61,4 +77,97 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.readAsDataURL(event.target.files[0]);
         }
     });
+
+    // --- Voice Recorder Logic ---
+    startRecordBtn.addEventListener('click', async () => {
+        // 1. Discard previous recording before starting a new one
+        resetRecorder(); 
+
+        try {
+            const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(audioStream);
+
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                // 2. Check the reset flag before creating playback
+                if (isResetting) {
+                    isResetting = false; // Reset the flag
+                    return; // Stop execution to prevent saving
+                }
+                
+                if (audioChunks.length === 0) return;
+
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audioPlayer = new Audio(audioUrl);
+                audioPlayer.controls = true;
+                audioPlaybackContainer.innerHTML = '';
+                audioPlaybackContainer.appendChild(audioPlayer);
+            };
+
+            mediaRecorder.start();
+            startTimer();
+            recorderInitialState.style.display = 'none';
+            recorderActiveState.style.display = 'flex';
+        } catch (err) {
+            console.error("Error accessing microphone:", err);
+            alert("Could not access the microphone. Please grant permission and try again.");
+        }
+    });
+
+    pauseRecordBtn.addEventListener('click', () => {
+        if (mediaRecorder.state === 'recording') {
+            mediaRecorder.pause();
+            stopTimer();
+            pauseRecordBtn.textContent = 'Resume';
+        } else if (mediaRecorder.state === 'paused') {
+            mediaRecorder.resume();
+            startTimer();
+            pauseRecordBtn.textContent = 'Pause';
+        }
+    });
+
+    doneRecordBtn.addEventListener('click', () => {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+        stopTimer();
+        recorderActiveState.style.display = 'none';
+        recorderInitialState.style.display = 'block';
+    });
+
+    resetRecordBtn.addEventListener('click', () => {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            isResetting = true; // Set flag to prevent saving on stop
+            mediaRecorder.stop();
+        }
+        resetRecorder();
+    });
+
+    function resetRecorder() {
+        stopTimer();
+        seconds = 0;
+        timerDisplay.textContent = '00:00';
+        audioChunks = [];
+        audioPlaybackContainer.innerHTML = '';
+        recorderActiveState.style.display = 'none';
+        recorderInitialState.style.display = 'block';
+        pauseRecordBtn.textContent = 'Pause';
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            seconds++;
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${mins}:${secs}`;
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
 });

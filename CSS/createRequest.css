@@ -179,7 +179,6 @@ textarea:focus {
     box-shadow: 0 8px 24px rgba(56, 217, 169, 0.4);
 }
 
-// ...existing code...
 .image-option {
     display: flex;
     align-items: center;
@@ -196,7 +195,6 @@ textarea:focus {
 }
 
 .image-option:hover {
-// ...existing code...
     font-size: 15px;
 }
 
@@ -213,7 +211,6 @@ textarea:focus {
 textarea {
     width: 100%;
     padding: 12px 14px;
-// ...existing code...
     box-shadow: 0 8px 24px rgba(56, 217, 169, 0.4);
 }
 
@@ -271,4 +268,79 @@ textarea {
     font-size: 32px;
     font-weight: bold;
     cursor: pointer;
+}
+
+/* Voice Recorder Styles */
+.voice-recorder {
+    margin-bottom: 12px;
+}
+
+.record-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.record-btn:hover {
+    background-color: var(--input-bg);
+}
+
+.recorder-state {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--input-bg);
+    padding: 8px;
+    border-radius: var(--radius-md);
+}
+
+#timer {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e63946;
+    min-width: 50px;
+    text-align: center;
+}
+
+.recorder-control-btn {
+    padding: 8px 12px;
+    border: none;
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.recorder-control-btn:hover {
+    background-color: #e2e8f0;
+    color: var(--text-primary);
+}
+
+.recorder-control-btn.done {
+    background-color: #38d9a9;
+    color: white;
+}
+.recorder-control-btn.done:hover {
+    background-color: #2ca987;
+}
+
+#audio-playback-container {
+    margin-top: 12px;
+}
+
+#audio-playback-container audio {
+    width: 100%;
+    border-radius: 999px;
 }
