@@ -61,7 +61,7 @@ body {
     margin-bottom: 24px;
 }
 
-.form-group label {
+/* .form-group label {
     display: block;
     font-size: 14px;
     font-weight: 600;
@@ -94,6 +94,51 @@ body {
     font-size: 12px;
     color: var(--text-secondary);
     margin: 0;
+} */
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #344054;
+}
+
+.image-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.image-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--card-bg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.image-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-color: #ccece4;
+}
+
+.image-option svg {
+    color: var(--text-primary);
+    width: 24px;
+    height: 24px;
+}
+
+.image-option span {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 15px;
 }
 
 textarea {

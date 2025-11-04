@@ -20,16 +20,25 @@
         <main class="form-content">
             <form action="villagerDashboard.html">
                 <div class="form-group">
-                    <label for="image-upload">Image</label>
-                    <div class="image-upload-box">
-                        <input type="file" id="image-upload" accept="image/*" hidden>
-                        <label for="image-upload" class="upload-label">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#98a2b3" viewBox="0 0 16 16">
-                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                    <label>Image</label>
+                    <div class="image-options-container">
+                        <!-- Option 1: Gallery -->
+                        <label for="gallery-upload" class="image-option">
+                            <input type="file" id="gallery-upload" accept="image/*" hidden>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                                <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2zM11.5 5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zm-7 2h7a.5.5 0 0 0 0 1h-7a.5.5 0 0 0 0-1zm7 2.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
                             </svg>
-                            <span>Click to upload or drag and drop</span>
-                            <p>PNG, JPG or GIF (MAX. 800x400px)</p>
+                            <span>From Gallery</span>
+                        </label>
+                        <!-- Option 2: Camera -->
+                        <label for="camera-upload" class="image-option">
+                            <input type="file" id="camera-upload" accept="image/*" capture="environment" hidden>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                            </svg>
+                            <span>Take Photo</span>
                         </label>
                     </div>
                 </div>
