@@ -1,0 +1,135 @@
+:root {
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #8a8f9b;
+    --input-bg: #f5f7fa;
+    --border-color: #e9ecf1;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --accent-gradient: linear-gradient(135deg, #63e6be, #38d9a9);
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-primary);
+}
+
+.page-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.back-button {
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+}
+.back-button:hover {
+    background-color: var(--bg);
+}
+
+.page-header h1 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.form-content {
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #344054;
+}
+
+.image-upload-box {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    background-color: var(--card-bg);
+}
+
+.upload-label {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.upload-label span {
+    font-weight: 600;
+    color: #38d9a9;
+}
+
+.upload-label p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #38d9a9;
+    box-shadow: 0 0 0 3px rgba(56, 217, 169, 0.2);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 999px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--accent-gradient);
+    box-shadow: 0 6px 18px rgba(56, 217, 169, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(56, 217, 169, 0.4);
+}

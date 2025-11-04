@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Request</title>
+    <link rel="stylesheet" href="../CSS/createRequest.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="page-header">
+            <a href="villagerDashboard.html" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+            </a>
+            <h1>Create New Request</h1>
+        </header>
+
+        <main class="form-content">
+            <form action="villagerDashboard.html">
+                <div class="form-group">
+                    <label for="image-upload">Image</label>
+                    <div class="image-upload-box">
+                        <input type="file" id="image-upload" accept="image/*" hidden>
+                        <label for="image-upload" class="upload-label">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#98a2b3" viewBox="0 0 16 16">
+                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                            </svg>
+                            <span>Click to upload or drag and drop</span>
+                            <p>PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="6" placeholder="Describe the problem in detail..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Request</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>
