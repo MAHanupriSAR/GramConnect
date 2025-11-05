@@ -172,15 +172,57 @@ app.post('/request/create', upload.single('problem_photo'), async (req, res) => 
     let finalDescription = description;
     let finalTags = null;
 
+    function extractJsonObject(text) {
+        if (!text) return null;
+
+        // 1) Try plain parse
+        try { return JSON.parse(text.trim()); } catch (_) {}
+
+        // 2) Strip code fences (e.g., ```json ... ```)
+        const fenceCleaned = text.replace(/```(?:json)?/gi, '').replace(/```/g, '').trim();
+        try { return JSON.parse(fenceCleaned); } catch (_) {}
+
+        // 3) Slice between first { and last }
+        const start = text.indexOf('{');
+        const end = text.lastIndexOf('}');
+        if (start !== -1 && end !== -1 && end > start) {
+            const candidate = text.slice(start, end + 1);
+            try { return JSON.parse(candidate); } catch (_) {}
+        }
+        return null;
+    }
+
     try {
         console.log('Starting Gemini analysis...');
 
-        const prompt = `Analyze the user's problem from the text and potentially an image.
-User's text: "${description}"
-Tasks:
-1. Generate a detailed explanation of the problem IN ENGLISH.
-2. Provide comma-separated tags IN ENGLISH (e.g., Water, Infrastructure, Electricity, Health).
-Format the entire response as a single JSON object with keys "explanation" and "tags". Do not include any other text or markdown formatting like \`\`\`json.`;
+        const prompt = `You are an expert analyst for a rural development platform. Your task is to analyze a problem reported by a user, which includes text and may include an image.
+
+User's Text: "${description}"
+
+Analyze the provided text and any accompanying image to perform the following tasks:
+
+1.  **Generate Problem Overview (explanation):**
+    * Write a detailed, professional explanation of the problem in ENGLISH.
+    * First, clearly identify the core issue (e.g., "A severe drought," "A broken electricity transformer," "A damaged road," "Lack of medical supplies").
+    * Second, describe the **immediate or potential impact** of this problem on the user, their livelihood, or their community (e.g., "This is causing critical water scarcity for drinking and farming," "This has led to a power outage affecting the entire village," "This disrupts transportation and access to markets," "This prevents residents from receiving necessary medical care").
+
+2.  **Generate Categorical Tags (tags):**
+    * Provide a list of comma-separated tags in ENGLISH.
+    * These tags must be high-level categories suitable for filtering and categorization.
+    * Choose from the following list where applicable: **Agriculture, Healthcare, Education, Electricity, Water & Sanitation, Infrastructure, Government Services, Environment, Safety & Security, Livelihood**.
+    * If the problem fits another major category, you may add it.
+
+3.  **Output Format:**
+    * You **MUST** format the entire response as a single, valid JSON object.
+    * The JSON object must have exactly two keys: "explanation" (for the overview) and "tags" (for the comma-separated string).
+    * **Do not include** \`\`\`json\`\`\` markdown, or any other text outside of the JSON object itself.
+
+Example Input Text: "school ki chhat toot gayi hai" (with an image of a broken school roof)
+Example Output:
+{
+  "explanation": "The user is reporting a damaged school building. The image confirms that the roof of the structure has collapsed or is severely broken. The impact of this problem is significant, as it creates an unsafe learning environment and likely prevents children from attending classes, disrupting their education.",
+  "tags": "Education, Infrastructure, Safety & Security"
+}`;
 
         const contentParts = [{ text: prompt }];
         if (photoPath) {
@@ -206,14 +248,29 @@ Format the entire response as a single JSON object with keys "explanation" and "
         console.log("Gemini Raw Response:", responseText);
 
         // Clean and parse the JSON response from the AI
-        const aiResponse = JSON.parse(responseText.trim());
+        const aiResponse = extractJsonObject(responseText);
 
-        if (aiResponse.explanation && aiResponse.tags) {
-            finalDescription = aiResponse.explanation;
-            finalTags = aiResponse.tags;
-            console.log('Gemini analysis successful.');
+        if (aiResponse) {
+            const explanation = (aiResponse.explanation ?? aiResponse.description ?? '').toString().trim();
+            let tagsVal = aiResponse.tags;
+
+            // Normalize tags: accept array or string, clamp to 255 chars for DB
+            let tagsStr = null;
+            if (Array.isArray(tagsVal)) {
+                tagsStr = tagsVal.map(t => String(t).trim()).filter(Boolean).join(', ');
+            } else if (tagsVal != null) {
+                tagsStr = String(tagsVal).trim();
+            }
+            if (tagsStr && tagsStr.length > 255) {
+                tagsStr = tagsStr.slice(0, 255);
+            }
+
+            if (explanation) finalDescription = explanation;
+            if (tagsStr) finalTags = tagsStr;
+
+            console.log('Gemini analysis extracted fields:', { hasExplanation: !!explanation, hasTags: !!tagsStr });
         } else {
-            console.warn('AI response did not contain expected "explanation" and "tags" keys. Using original description.');
+            console.warn('AI response was not valid JSON. Using original description.');
         }
 
     } catch (aiError) {

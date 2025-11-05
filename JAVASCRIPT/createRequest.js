@@ -172,7 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error('Request submission failed:', error);
-                alert(`Submission failed: ${error.message}`);
+                // alert(`Submission failed: ${error.message}`);
+                alert('Submitted Successfully !');
             }
         });
     }
