@@ -24,6 +24,7 @@ CREATE TABLE institutions (
     point_of_contact VARCHAR(100) NOT NULL,         -- Name of point of contact person
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- When the record was created
 );
+
 ALTER TABLE institutions
 DROP COLUMN address,
 ADD COLUMN latitude DECIMAL(10,8),
