@@ -1,0 +1,74 @@
+/* Home page styles for Gram-Connect - palette matched to other pages */
+:root{
+	/* Site palette tuned to match the screenshot */
+	--bg-top: #eefef3; /* very pale green */
+	--bg-bottom: #f7f3df; /* pale cream */
+	--card-bg: #ffffff;
+	--text-primary: #1f2937; /* dark slate */
+	--text-secondary: #6b7280; /* muted gray */
+	--accent: #1f8f3d; /* deep green used for logo and primary button */
+	--accent-2: #63e6be; /* lighter green for subtle accents */
+	--accent-gradient: linear-gradient(135deg, #63e6be, #1f8f3d);
+	--gold: #C78D00; /* register button */
+	--muted: #6b7280;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+	margin:0;
+	font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+	color: var(--text-primary);
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+}
+
+.container{width:90%;max-width:1100px;margin:0 auto}
+
+.site-header{padding:48px 0 10px}
+.header-inner{display:flex;align-items:center;gap:18px;justify-content:center;flex-direction:column}
+.logo{font-size:34px;color:var(--accent)}
+.logo svg{display:block;fill:var(--accent-2)}
+.site-title h1{margin:0;font-weight:800;color:var(--accent);font-size:36px;letter-spacing:0.3px}
+.site-title .sub-hi{font-size:14px;color:var(--accent);margin-top:6px}
+.site-title .tagline{font-size:14px;color:var(--text-secondary);font-style:italic;margin-top:6px}
+
+.main-content{display:flex;justify-content:center;padding:30px 0 60px}
+.hero-card{background:var(--card-bg);padding:44px;border-radius:12px;box-shadow:0 18px 40px rgba(31,41,55,0.06);max-width:920px;text-align:center}
+.hero-card h2{font-size:26px;margin:6px 0 12px;font-weight:700}
+.hero-card .lead{color:var(--text-secondary);line-height:1.7;font-size:15px;max-width:760px;margin:0 auto 28px}
+
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:26px 0 28px;align-items:start}
+.feature{text-align:center}
+.feature .icon{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;box-shadow:0 6px 18px rgba(16,24,32,0.04)}
+.feature .icon svg{width:28px;height:28px;display:block;color:inherit}
+.icon-green{background:rgba(31,143,61,0.08);color:var(--accent)}
+.icon-green-light{background:rgba(141,213,158,0.12);color:var(--accent-2)}
+.icon-yellow{background:rgba(240,200,90,0.12);color:var(--gold)}
+.feature h4{margin:6px 0 6px;font-size:16px}
+.feature .muted{color:var(--muted);font-size:13px;margin:0 10px}
+
+.cta-row{display:flex;gap:18px;justify-content:center;margin-top:12px;align-items:center}
+.cta-group{display:flex;gap:10px;align-items:center}
+.btn-outline{background:transparent;color:var(--gold);border:2px solid rgba(199,141,0,0.16);padding:10px 14px;border-radius:8px;font-weight:700;box-shadow:none}
+.btn-outline:hover{background:rgba(199,141,0,0.10);color:#fff}
+.btn{display:inline-block;padding:12px 22px;border-radius:8px;text-decoration:none;color:white;font-weight:700;box-shadow:0 8px 22px rgba(31,41,55,0.08);transition:transform .12s ease,box-shadow .12s ease}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(31,41,55,0.12)}
+.btn-green{background:var(--accent);padding:12px 24px}
+.btn-gold{background:var(--gold);color:#fff;padding:12px 24px}
+.btn-dark{background:#2f3a44;padding:12px 20px}
+
+.site-footer{padding:36px 0 60px;text-align:center;color:var(--text-secondary)}
+.site-footer .small{margin:6px 0;font-size:13px}
+
+/* Responsive */
+@media (max-width:880px){
+	.features{grid-template-columns:repeat(1,1fr)}
+	.hero-card{padding:28px}
+}
+
+@media (min-width:881px) and (max-width:1100px){
+	.features{grid-template-columns:repeat(3,1fr)}
+	.hero-card{padding:34px}
+}

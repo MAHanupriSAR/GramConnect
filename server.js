@@ -167,19 +167,20 @@ app.post('/request/create', upload.single('problem_photo'), async (req, res) => 
         return res.status(400).json({ success: false, message: 'Villager ID and description are required.' });
     }
 
-    let processedDescription = description;
-    let aiSummary = null;
-    let aiTags = null;
+    // --- START: MODIFIED LOGIC ---
+    let finalDescription = description; // Default to original user description
+    let finalTags = null; // Default to null
 
+    // 1. Translate the user's description first
     try {
         const translationResult = await translate(description, { to: 'en' });
-        processedDescription = translationResult.text;
+        finalDescription = translationResult.text; // Now contains the translated text
         console.log('Translation successful.');
     } catch (translateError) {
         console.error('Translation failed, using original description:', translateError.message);
     }
 
-    // --- START: Gemini AI Analysis ---
+    // 2. Perform Gemini AI Analysis if a photo exists
     if (photoPath) {
         try {
             console.log('Starting Gemini analysis...');
@@ -187,47 +188,39 @@ app.post('/request/create', upload.single('problem_photo'), async (req, res) => 
             const imageBase64 = imageBuffer.toString('base64');
 
             const prompt = `Analyze the user's problem from the text and image.
-            User's text: "${processedDescription}"
+            User's text: "${finalDescription}"
             
             Your tasks:
             1. Provide a concise, one-sentence summary of the problem in English.
             2. Provide a comma-separated list of 1-3 relevant tags from these categories: Healthcare, Agriculture, Education, Infrastructure, Sanitation, Water, Electricity, Governance, Social Welfare.
             
-            Format your response as a single, clean JSON object with two keys: "summary" and "tags".
-            Example: {"summary": "A villager is reporting a broken water pump affecting the local community.", "tags": "Water,Sanitation"}`;
+            Format your response as a single, clean JSON object with two keys: "summary" and "tags".`;
 
-            const imagePart = {
-                inlineData: {
-                    data: imageBase64,
-                    mimeType: 'image/jpeg', // or image/png
-                },
-            };
-
+            const imagePart = { inlineData: { data: imageBase64, mimeType: req.file.mimetype } };
             const result = await model.generateContent([prompt, imagePart]);
             const responseText = result.response.text();
-            
-            // Clean the response to ensure it's valid JSON
             const jsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
             const aiResponse = JSON.parse(jsonString);
 
-            aiSummary = aiResponse.summary;
-            aiTags = aiResponse.tags;
-            console.log('Gemini analysis successful:', { aiSummary, aiTags });
+            // If AI is successful, overwrite the description with the AI summary
+            finalDescription = aiResponse.summary;
+            finalTags = aiResponse.tags;
+            console.log('Gemini analysis successful.');
 
         } catch (aiError) {
-            console.error('Gemini AI analysis failed:', aiError);
-            // Proceed without AI data if analysis fails
+            console.error('Gemini AI analysis failed. Storing translated description instead.');
+            // On failure, finalDescription already holds the translated text, and finalTags is null.
         }
     }
-    // --- END: Gemini AI Analysis ---
 
+    // 3. Insert into the database
     try {
         const sql = `
-            INSERT INTO pendingRequests (villager_id, ai_description, problem_photo, tags) 
+            INSERT INTO pendingRequests (villager_id, problem_description, problem_photo, tags) 
             VALUES (?, ?, ?, ?)
         `;
         
-        const values = [villagerId, processedDescription, photoPath, aiSummary, aiTags];
+        const values = [villagerId, finalDescription, photoPath, finalTags];
 
         await pool.query(sql, values);
 
@@ -237,6 +230,7 @@ app.post('/request/create', upload.single('problem_photo'), async (req, res) => 
         console.error('Database Insert Error:', dbError);
         res.status(500).json({ success: false, message: 'An error occurred while saving the request.' });
     }
+    // --- END: MODIFIED LOGIC ---
 });
 
 app.listen(port, () => {
