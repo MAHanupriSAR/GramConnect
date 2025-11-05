@@ -129,6 +129,31 @@ input:focus {
     transform: scale(1.05);
 }
 
+.btn-location {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    background-color: #fff;
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-location:hover {
+    background-color: var(--input-bg);
+    border-color: #38d9a9;
+}
+
+.location-status {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    min-height: 1em;
+}
+
 .form-group-checkbox {
     display: flex;
     align-items: center;

@@ -16,50 +16,58 @@
         <form class="registration-form">
             <div class="form-group">
                 <label for="full-name">Full Name</label>
-                <input type="text" id="full-name" placeholder="Enter your full name">
+                <input type="text" id="full-name" placeholder="Enter your full name" autocomplete="name" required>
             </div>
 
             <div class="form-group">
                 <label for="mobile-number">Mobile Number</label>
-                <input type="tel" id="mobile-number" placeholder="Enter your 10-digit mobile number">
+                <input type="tel" id="mobile-number" placeholder="Enter your 10-digit mobile number" autocomplete="tel" required>
             </div>
 
-            <div class="form-row">
+            <!-- <div class="form-row">
                 <div class="form-group">
                     <label for="address">Address</label>
                     <input type="text" id="address" placeholder="Enter Address">
-                </div>
+                </div> -->
                 <!-- <div class="form-group">
                     <label for="district">District</label>
                     <input type="text" id="district" placeholder="District name">
                 </div> -->
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="state">State</label>
                     <input type="text" id="state" placeholder="State name">
                 </div>
+            </div> -->
+
+            <div class="form-group">
+                <label>Location</label>
+                <button type="button" id="get-location-btn" class="btn-location">Fetch Current Location</button>
+                <p id="location-status" class="location-status"></p>
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
             </div>
 
             <div class="form-group">
                 <h2>Aadhaar Verification</h2>
                 <label for="aadhaar-number">Aadhaar Number</label>
                 <div class="input-with-button">
-                    <input type="text" id="aadhaar-number" placeholder="Enter 12-digit Aadhaar number">
+                    <input type="text" id="aadhaar-number" placeholder="Enter 12-digit Aadhaar number" autocomplete="off" required>
                     <button type="button" class="btn-otp">Send OTP</button>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="password">Create Password</label>
-                <input type="password" id="password" placeholder="Enter a strong password">
+                <input type="password" id="password" placeholder="Enter a strong password" autocomplete="new-password" required>
             </div>
 
             <div class="form-group">
                 <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" placeholder="Re-enter your password">
+                <input type="password" id="confirm-password" placeholder="Re-enter your password" autocomplete="new-password" required>
             </div>
 
             <div class="form-group-checkbox">
-                <input type="checkbox" id="terms">
+                <input type="checkbox" id="terms" required>
                 <label for="terms">I agree to the Terms & Conditions</label>
             </div>
 
@@ -70,5 +78,6 @@
             <p>Already have an account? <a href="login.html">Login here</a></p>
         </footer>
     </div>
+    <script src = "../JAVASCRIPT/villagerRegister.js"></script>
 </body>
 </html>
