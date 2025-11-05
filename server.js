@@ -7,11 +7,13 @@ const path = require('path');
 const fs = require('fs');
 const { translate } = require('google-translate-api-x'); // Add this line
 
-require('dotenv').config(); // Load environment variables
-const { GoogleGenerativeAI } = require('@google/generative-ai'); // Add Gemini SDK
+require('dotenv').config();
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
 // --- Gemini AI Configuration ---
+// Make sure GEMINI_API_KEY is set in your .env file
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); // Updated model name
 
 const app = express();
 const port = 3000;
@@ -167,53 +169,59 @@ app.post('/request/create', upload.single('problem_photo'), async (req, res) => 
         return res.status(400).json({ success: false, message: 'Villager ID and description are required.' });
     }
 
-    // --- START: MODIFIED LOGIC ---
-    let finalDescription = description; // Default to original user description
-    let finalTags = null; // Default to null
+    let finalDescription = description;
+    let finalTags = null;
 
-    // 1. Translate the user's description first
     try {
-        const translationResult = await translate(description, { to: 'en' });
-        finalDescription = translationResult.text; // Now contains the translated text
-        console.log('Translation successful.');
-    } catch (translateError) {
-        console.error('Translation failed, using original description:', translateError.message);
-    }
+        console.log('Starting Gemini analysis...');
 
-    // 2. Perform Gemini AI Analysis if a photo exists
-    if (photoPath) {
-        try {
-            console.log('Starting Gemini analysis...');
-            const imageBuffer = fs.readFileSync(photoPath);
-            const imageBase64 = imageBuffer.toString('base64');
+        const prompt = `Analyze the user's problem from the text and potentially an image.
+User's text: "${description}"
+Tasks:
+1. Generate a detailed explanation of the problem IN ENGLISH.
+2. Provide comma-separated tags IN ENGLISH (e.g., Water, Infrastructure, Electricity, Health).
+Format the entire response as a single JSON object with keys "explanation" and "tags". Do not include any other text or markdown formatting like \`\`\`json.`;
 
-            const prompt = `Analyze the user's problem from the text and image.
-            User's text: "${finalDescription}"
-            
-            Your tasks:
-            1. Provide a concise, one-sentence summary of the problem in English.
-            2. Provide a comma-separated list of 1-3 relevant tags from these categories: Healthcare, Agriculture, Education, Infrastructure, Sanitation, Water, Electricity, Governance, Social Welfare.
-            
-            Format your response as a single, clean JSON object with two keys: "summary" and "tags".`;
+        const contentParts = [{ text: prompt }];
+        if (photoPath) {
+            try {
+                const imageBuffer = fs.readFileSync(photoPath);
+                contentParts.push({
+                    inlineData: {
+                        data: imageBuffer.toString("base64"),
+                        mimeType: req.file.mimetype,
+                    },
+                });
+            } catch (readError) {
+                console.error("Error reading image file for AI analysis:", readError);
+                // Continue without the image if it fails to read
+            }
+        }
 
-            const imagePart = { inlineData: { data: imageBase64, mimeType: req.file.mimetype } };
-            const result = await model.generateContent([prompt, imagePart]);
-            const responseText = result.response.text();
-            const jsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-            const aiResponse = JSON.parse(jsonString);
+        const result = await model.generateContent({
+            contents: [{ parts: contentParts }],
+        });
 
-            // If AI is successful, overwrite the description with the AI summary
-            finalDescription = aiResponse.summary;
+        const responseText = result.response.text();
+        console.log("Gemini Raw Response:", responseText);
+
+        // Clean and parse the JSON response from the AI
+        const aiResponse = JSON.parse(responseText.trim());
+
+        if (aiResponse.explanation && aiResponse.tags) {
+            finalDescription = aiResponse.explanation;
             finalTags = aiResponse.tags;
             console.log('Gemini analysis successful.');
-
-        } catch (aiError) {
-            console.error('Gemini AI analysis failed. Storing translated description instead.');
-            // On failure, finalDescription already holds the translated text, and finalTags is null.
+        } else {
+            console.warn('AI response did not contain expected "explanation" and "tags" keys. Using original description.');
         }
+
+    } catch (aiError) {
+        console.error('Gemini AI analysis failed. Storing original description instead.', aiError);
+        // The endpoint will continue and save the original data
     }
 
-    // 3. Insert into the database
+    // --- Insert into the database ---
     try {
         const sql = `
             INSERT INTO pendingRequests (villager_id, problem_description, problem_photo, tags) 
@@ -221,16 +229,13 @@ app.post('/request/create', upload.single('problem_photo'), async (req, res) => 
         `;
         
         const values = [villagerId, finalDescription, photoPath, finalTags];
-
         await pool.query(sql, values);
-
         res.status(201).json({ success: true, message: 'Request submitted successfully!' });
 
     } catch (dbError) {
         console.error('Database Insert Error:', dbError);
         res.status(500).json({ success: false, message: 'An error occurred while saving the request.' });
     }
-    // --- END: MODIFIED LOGIC ---
 });
 
 app.listen(port, () => {
